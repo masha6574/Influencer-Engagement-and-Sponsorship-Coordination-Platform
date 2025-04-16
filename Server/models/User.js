@@ -1,16 +1,24 @@
-const { DataTypes } = require("sequelize");
-const sequelize = require("../config/db");
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/database');
 
-const User = sequelize.define("User", {
-  name: DataTypes.STRING,
-  email: { type: DataTypes.STRING, unique: true },
-  password: DataTypes.STRING,
-  role: DataTypes.ENUM("admin", "sponsor", "influencer", "user"), // Added "user"
-  company: DataTypes.STRING,
-  industry: DataTypes.STRING,
-  category: DataTypes.STRING,
-  niche: DataTypes.STRING,
-  reach: DataTypes.INTEGER
+const User = sequelize.define('User', {
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  email: {
+    type: DataTypes.STRING,
+    unique: true,
+    allowNull: false
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  role: {
+    type: DataTypes.ENUM('admin', 'sponsor', 'influencer'),
+    allowNull: false
+  }
 });
 
 module.exports = User;

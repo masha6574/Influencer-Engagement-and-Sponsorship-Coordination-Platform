@@ -1,14 +1,28 @@
-const { DataTypes } = require("sequelize");
-const sequelize = require("../config/db");
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/database');
+const Sponsor = require('./Sponsor');
 
-const Campaign = sequelize.define("Campaign", {
-  name: DataTypes.STRING,
-  description: DataTypes.TEXT,
-  start_date: DataTypes.DATE,
-  end_date: DataTypes.DATE,
-  budget: DataTypes.INTEGER,
-  visibility: DataTypes.ENUM("public", "private"),
-  goals: DataTypes.TEXT
+const Campaign = sequelize.define('Campaign', {
+  title: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  description: {
+    type: DataTypes.TEXT
+  },
+  category: {
+    type: DataTypes.STRING
+  },
+  budget: {
+    type: DataTypes.FLOAT
+  },
+  isPublic: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: true
+  }
 });
+
+Campaign.belongsTo(Sponsor, { foreignKey: 'sponsorId', onDelete: 'CASCADE' });
+Sponsor.hasMany(Campaign, { foreignKey: 'sponsorId' });
 
 module.exports = Campaign;

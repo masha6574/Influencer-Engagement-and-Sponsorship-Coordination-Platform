@@ -1,15 +1,81 @@
-const sequelize = require("../config/db");
-const User = require("./User");
-const Campaign = require("./Campaign");
-const AdRequest = require("./AdRequest");
+const sequelize = require('../config/database');
 
-User.hasMany(Campaign, { foreignKey: "sponsorId" });
-Campaign.belongsTo(User, { foreignKey: "sponsorId" });
+// Import all models
+const User = require('./User');
+const Sponsor = require('./Sponsor');
+const Influencer = require('./Influencer');
+const Campaign = require('./Campaign');
+const AdRequest = require('./AdRequest');
 
-Campaign.hasMany(AdRequest, { foreignKey: "campaignId" });
-AdRequest.belongsTo(Campaign, { foreignKey: "campaignId" });
+// ===================
+// Associations
+// ===================
 
-User.hasMany(AdRequest, { foreignKey: "influencerId" });
-AdRequest.belongsTo(User, { foreignKey: "influencerId" });
+// 1. User - Sponsor (One-to-One)
+User.hasOne(Sponsor, {
+    foreignKey: {
+        name: 'userId',
+        allowNull: false
+    },
+    onDelete: 'CASCADE'
+});
+Sponsor.belongsTo(User, {
+    foreignKey: 'userId'
+});
 
-module.exports = { sequelize, User, Campaign, AdRequest };
+// 2. User - Influencer (One-to-One)
+User.hasOne(Influencer, {
+    foreignKey: {
+        name: 'userId',
+        allowNull: false
+    },
+    onDelete: 'CASCADE'
+});
+Influencer.belongsTo(User, {
+    foreignKey: 'userId'
+});
+
+// 3. Sponsor - Campaign (One-to-Many)
+Sponsor.hasMany(Campaign, {
+    foreignKey: {
+        name: 'sponsorId',
+        allowNull: false
+    },
+    onDelete: 'CASCADE'
+});
+Campaign.belongsTo(Sponsor, {
+    foreignKey: 'sponsorId'
+});
+
+// 4. Campaign - AdRequest (One-to-Many)
+Campaign.hasMany(AdRequest, {
+    foreignKey: {
+        name: 'campaignId',
+        allowNull: false
+    },
+    onDelete: 'CASCADE'
+});
+AdRequest.belongsTo(Campaign, {
+    foreignKey: 'campaignId'
+});
+
+// 5. Influencer - AdRequest (One-to-Many)
+Influencer.hasMany(AdRequest, {
+    foreignKey: {
+        name: 'influencerId',
+        allowNull: false
+    },
+    onDelete: 'CASCADE'
+});
+AdRequest.belongsTo(Influencer, {
+    foreignKey: 'influencerId'
+});
+
+module.exports = {
+    sequelize,
+    User,
+    Sponsor,
+    Influencer,
+    Campaign,
+    AdRequest
+};

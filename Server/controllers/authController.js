@@ -1,40 +1,60 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { User } = require("../models"); // Import User model
+const { User, Sponsor, Influencer } = require('../models'); // adjust path as needed
+const sequelize = require('../config/database'); // ensure this is the Sequelize instance, NOT class
+const bcrypt = require('bcrypt');
 
-// Register route
 const register = async (req, res) => {
   const { name, email, password, role, company, industry, category, niche, reach } = req.body;
 
+  // Start transaction
+  const t = await sequelize.transaction();
+
   try {
     // Check if user already exists
-    const existingUser = await User.findOne({ where: { email } });
+    const existingUser = await User.findOne({ where: { email }, transaction: t });
     if (existingUser) {
+      await t.rollback();
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // Hash password before saving
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create new user
+    // Create user
     const newUser = await User.create({
       name,
       email,
       password: hashedPassword,
       role,
-      company,
-      industry,
-      category,
-      niche,
-      reach
-    });
+    }, { transaction: t });
 
+    // Role-based creation
+    if (role === 'sponsor') {
+      await Sponsor.create({
+        userId: newUser.id,
+        companyName: company,
+        industry,
+      }, { transaction: t });
+
+    } else if (role === 'influencer') {
+      await Influencer.create({
+        userId: newUser.id,
+        category,
+        niche,
+        reach,
+      }, { transaction: t });
+    }
+
+    // Everything went fine
+    await t.commit();
     return res.status(201).json({ message: "User registered successfully", user: newUser });
+
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server error" });
+    // Rollback on error
+    await t.rollback();
+    console.error("Transaction error during registration:", error);
+    return res.status(500).json({ message: "Server error, registration failed" });
   }
 };
+
 
 // Login route
 const login = async (req, res) => {
