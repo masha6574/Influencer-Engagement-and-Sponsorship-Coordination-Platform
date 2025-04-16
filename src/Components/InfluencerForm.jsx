@@ -1,6 +1,6 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import axios from "axios";
-import "./InfluencerForm.css";
 
 const InfluencerForm = () => {
     const [name, setName] = useState("");
@@ -10,13 +10,12 @@ const InfluencerForm = () => {
     const [niche, setNiche] = useState("");
     const [reach, setReach] = useState("");
     const [role, setRole] = useState("influencer"); // Default role as 'influencer'
-    const [message, setMessage] = useState(""); // State for success or error message
+    const [message, setMessage] = useState("");
 
-    // Submit handler
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const maxReach = 1000000000; // Adjust this limit based on your DB schema (e.g. INT)
+        const maxReach = 1000000000;
 
         if (!Number.isInteger(Number(reach)) || Number(reach) < 0 || Number(reach) > maxReach) {
             setMessage(`Reach must be a number between 0 and ${maxReach.toLocaleString()}`);
@@ -49,63 +48,69 @@ const InfluencerForm = () => {
     };
 
     return (
-        <div className="form-container">
-            <h2>Influencer Registration</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label htmlFor="name">Name</label>
+        <div className="max-w-xl mx-auto mt-8 p-6 bg-gray-100 rounded-lg shadow-md">
+            <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Influencer Registration</h2>
+            <form onSubmit={handleSubmit} className="space-y-5">
+                <div>
+                    <label htmlFor="name" className="block font-semibold mb-1">Name</label>
                     <input
                         type="text"
                         id="name"
+                        className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         required
                     />
                 </div>
-                <div className="form-group">
-                    <label htmlFor="email">Email</label>
+                <div>
+                    <label htmlFor="email" className="block font-semibold mb-1">Email</label>
                     <input
                         type="email"
                         id="email"
+                        className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     />
                 </div>
-                <div className="form-group">
-                    <label htmlFor="password">Password</label>
+                <div>
+                    <label htmlFor="password" className="block font-semibold mb-1">Password</label>
                     <input
                         type="password"
                         id="password"
+                        className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
                 </div>
-                <div className="form-group">
-                    <label htmlFor="category">Category</label>
+                <div>
+                    <label htmlFor="category" className="block font-semibold mb-1">Category</label>
                     <input
                         type="text"
                         id="category"
+                        className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
                         required
                     />
                 </div>
-                <div className="form-group">
-                    <label htmlFor="niche">Niche</label>
+                <div>
+                    <label htmlFor="niche" className="block font-semibold mb-1">Niche</label>
                     <input
                         type="text"
                         id="niche"
+                        className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                         value={niche}
                         onChange={(e) => setNiche(e.target.value)}
                     />
                 </div>
-                <div className="form-group">
-                    <label htmlFor="reach">Reach</label>
+                <div>
+                    <label htmlFor="reach" className="block font-semibold mb-1">Reach</label>
                     <input
                         type="number"
                         id="reach"
+                        className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                         value={reach}
                         onChange={(e) => setReach(e.target.value)}
                         required
@@ -113,11 +118,24 @@ const InfluencerForm = () => {
                         max="1000000000"
                     />
                 </div>
-                <button type="submit">Register</button>
+                <button
+                    type="submit"
+                    className="w-full py-3 bg-green-600 text-white font-semibold rounded-md hover:bg-green-700 transition duration-200"
+                >
+                    Register
+                </button>
             </form>
 
-            {/* Display success or error message */}
-            {message && <p className="message">{message}</p>}
+            {message && (
+                <p
+                    className={`mt-4 text-center p-3 rounded-md text-sm font-medium ${message.toLowerCase().includes("success")
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-100 text-red-700"
+                        }`}
+                >
+                    {message}
+                </p>
+            )}
         </div>
     );
 };
