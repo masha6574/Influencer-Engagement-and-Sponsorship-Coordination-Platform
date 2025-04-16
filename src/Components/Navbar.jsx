@@ -17,7 +17,7 @@ const Navbar = () => {
                         </div>
                         <ul className="flex items-center space-x-6">
                             <Link className="font-semibold text-gray-700" to='/about'><li>About</li></Link>
-                            <Link className="font-semibold text-gray-700" to='/register'><li>Register</li></Link>
+                            <Link className="font-semibold text-gray-700" to='/signup'><li>Register</li></Link>
                             <Link className="font-semibold text-gray-700" to='/login'><li>Login</li></Link>
                             <li>
                                 {/* <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
