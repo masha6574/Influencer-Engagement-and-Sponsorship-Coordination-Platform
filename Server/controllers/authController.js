@@ -1,6 +1,7 @@
 const { User, Sponsor, Influencer } = require('../models'); // adjust path as needed
 const sequelize = require('../config/database'); // ensure this is the Sequelize instance, NOT class
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const register = async (req, res) => {
   const { name, email, password, role, company, budget, industry, category, niche, reach } = req.body;
@@ -56,56 +57,78 @@ const register = async (req, res) => {
   }
 };
 
-
-// Login route
 const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Find the user by email
+    console.log("Login attempt for:", email);
+
     const user = await User.findOne({ where: { email } });
+
+    if (!user) {
+      console.log("User not found");
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      console.log("Invalid password");
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    const token = jwt.sign({ userId: user.id, role: user.role }, "your_jwt_secret", {
+      expiresIn: "1h",
+    });
+
+    console.log("Login successful for:", email);
+    return res.status(200).json({
+      message: "Login successful",
+      token,
+      user, // You can also return this to show the profile
+    });
+  } catch (error) {
+    console.error("Login error:", error);
+    return res.status(500).json({ message: "Server error during login" });
+  }
+};
+
+const authenticateJWT = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader) {
+    return res.status(401).json({ message: "No token provided" });
+  }
+
+  const token = authHeader.split(" ")[1]; // Remove 'Bearer'
+
+  try {
+    const decoded = jwt.verify(token, "your_jwt_secret");
+    req.user = decoded;
+    next();
+  } catch (error) {
+    return res.status(403).json({ message: "Invalid token" });
+  }
+};
+
+const getProfile = async (req, res) => {
+  try {
+
+    if (!req.user || !req.user.userId) {
+      return res.status(401).json({ message: "Unauthorized - user info missing" });
+    }
+
+    const userId = req.user.userId;
+
+    const user = await User.findOne({ where: { id: userId } });
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Compare the password with the hashed one in the database
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ message: "Invalid credentials" });
-    }
-
-    // Generate a JWT token
-    const token = jwt.sign({ userId: user.id, role: user.role }, "your_jwt_secret", {
-      expiresIn: "1h" // Token expiration time (1 hour in this example)
-    });
-
-    // Return the token
-    return res.status(200).json({
-      message: "Login successful",
-      token
-    });
+    res.json({ user });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Failed to fetch profile" });
   }
 };
 
-// Middleware to verify JWT token
-const authenticateJWT = (req, res, next) => {
-  const token = req.header("Authorization")?.split(" ")[1]; // Expecting format 'Bearer <token>'
-
-  if (!token) {
-    return res.status(403).json({ message: "Access denied, no token provided" });
-  }
-
-  try {
-    const decoded = jwt.verify(token, "your_jwt_secret");
-    req.user = decoded; // Attach user info to request
-    next(); // Proceed to the next middleware or route handler
-  } catch (error) {
-    return res.status(400).json({ message: "Invalid token" });
-  }
-};
-
-module.exports = { register, login, authenticateJWT };
+module.exports = { register, login, authenticateJWT, getProfile };

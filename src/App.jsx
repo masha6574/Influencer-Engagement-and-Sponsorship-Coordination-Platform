@@ -8,6 +8,7 @@ import SignUpStep3 from "./signup/steps/SignUpStep3";
 import SignUpLayout from "./signup/SignUpLayout";
 import { SignUpProvider } from "./signup/SignUpContext";
 import "./Components/index.css";
+import LoginForm from "./Components/LoginForm";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       { path: "step2", element: <SignUpStep2 /> },
       { path: "step3", element: <SignUpStep3 /> }
     ]
+  },
+  {
+    path: "/login",
+    element: <LoginForm />
   }
 ]);
 
