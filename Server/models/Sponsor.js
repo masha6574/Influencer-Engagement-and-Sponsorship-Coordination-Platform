@@ -11,7 +11,7 @@ const Sponsor = sequelize.define('Sponsor', {
     type: DataTypes.STRING
   },
   budget: {
-    type: DataTypes.FLOAT
+    type: DataTypes.INTEGER
   }
 });
 

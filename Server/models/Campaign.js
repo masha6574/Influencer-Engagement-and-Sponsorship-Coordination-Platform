@@ -14,7 +14,7 @@ const Campaign = sequelize.define('Campaign', {
     type: DataTypes.STRING
   },
   budget: {
-    type: DataTypes.FLOAT
+    type: DataTypes.INTEGER
   },
   isPublic: {
     type: DataTypes.BOOLEAN,

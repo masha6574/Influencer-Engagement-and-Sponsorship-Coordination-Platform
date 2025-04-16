@@ -3,7 +3,7 @@ const sequelize = require('../config/database'); // ensure this is the Sequelize
 const bcrypt = require('bcrypt');
 
 const register = async (req, res) => {
-  const { name, email, password, role, company, industry, category, niche, reach } = req.body;
+  const { name, email, password, role, company, budget, industry, category, niche, reach } = req.body;
 
   // Start transaction
   const t = await sequelize.transaction();
@@ -32,6 +32,7 @@ const register = async (req, res) => {
         userId: newUser.id,
         companyName: company,
         industry,
+        budget,
       }, { transaction: t });
 
     } else if (role === 'influencer') {

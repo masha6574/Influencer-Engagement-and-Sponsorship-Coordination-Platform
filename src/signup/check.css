@@ -7,3 +7,38 @@
 .btn {
     @apply w-full py-3 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 transition;
 }
+
+/* Style for the input field when there is an error */
+.input-error {
+    border: 2px solid red;
+    animation: shake 0.3s ease-in-out;
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* Keyframes for shake animation */
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-4px);
+    }
+
+    50% {
+        transform: translateX(4px);
+    }
+
+    75% {
+        transform: translateX(-4px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
