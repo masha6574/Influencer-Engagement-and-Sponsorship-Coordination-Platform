@@ -1,0 +1,49 @@
+.cloud {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 1;
+    animation: floatClouds 10s ease-in-out infinite;
+    filter: blur(100px);
+    /* Enhances the background blending look */
+}
+
+.cloud-1 {
+    width: 600px;
+    height: 600px;
+    top: 5%;
+    left: 5%;
+    background-color: #B9B28A;
+    animation-delay: 0s;
+}
+
+.cloud-2 {
+    width: 700px;
+    height: 700px;
+    top: 35%;
+    left: 40%;
+    background-color: #EBE5C2;
+    animation-delay: 2s;
+}
+
+.cloud-3 {
+    width: 500px;
+    height: 500px;
+    top: 65%;
+    left: 15%;
+    background-color: #F8F3D9;
+    animation-delay: 4s;
+}
+
+@keyframes floatClouds {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    50% {
+        transform: translate(100px, -70px) scale(1.8);
+    }
+
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+}

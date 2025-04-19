@@ -1,14 +1,12 @@
 @import "tailwindcss";
 
 body {
-    margin: 0;
-    padding-right: 15px;
     overflow-x: hidden;
     font-family: "Inter", sans-serif;
 }
 
 .slider {
-    width: 70%;
+    width: 100vw;
     height: var(--height);
     overflow: hidden;
     mask-image: linear-gradient(to right,

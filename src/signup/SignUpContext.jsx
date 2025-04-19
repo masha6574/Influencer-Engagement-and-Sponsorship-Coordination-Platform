@@ -6,7 +6,7 @@ const SignUpContext = createContext();
 export const SignUpProvider = ({ children }) => {
     const [formData, setFormData] = useState({
         name: "", email: "", password: "", role: "",
-        category: "", niche: "", reach: 0, company: "", industry: "", budget: 0
+        category: "", niche: "", reach: "", company: "", industry: "", budget: ""
     });
 
     const updateFormData = (updates) => {

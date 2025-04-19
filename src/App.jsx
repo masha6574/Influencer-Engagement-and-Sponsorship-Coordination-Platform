@@ -9,38 +9,53 @@ import SignUpLayout from "./signup/SignUpLayout";
 import { SignUpProvider } from "./signup/SignUpContext";
 import "./Components/index.css";
 import LoginForm from "./Components/LoginForm";
+import CloudLayout from "./Components/CloudLayout"; // import the wrapper
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <DeviceDisplay />
+    element: (
+      <CloudLayout>
+        <DeviceDisplay />
+      </CloudLayout>
+    ),
   },
   {
     path: "/about",
-    element: <About />
+    element: (
+      <CloudLayout>
+        <About />
+      </CloudLayout>
+    ),
+  },
+  {
+    path: "/login",
+    element: (
+      <CloudLayout>
+        <LoginForm />
+      </CloudLayout>
+    ),
   },
   {
     path: "/register",
-    element: <SignUp />
+    element: <SignUp />,
   },
   {
     path: "/signup",
     element: (
-      <SignUpProvider>
-        <SignUpLayout />
-      </SignUpProvider>
+      <CloudLayout>
+        <SignUpProvider>
+          <SignUpLayout />
+        </SignUpProvider>
+      </CloudLayout>
     ),
     children: [
       { index: true, element: <Navigate to="/signup/step1" replace /> },
       { path: "step1", element: <SignUpStep1 /> },
       { path: "step2", element: <SignUpStep2 /> },
-      { path: "step3", element: <SignUpStep3 /> }
-    ]
+      { path: "step3", element: <SignUpStep3 /> },
+    ],
   },
-  {
-    path: "/login",
-    element: <LoginForm />
-  }
 ]);
 
 function App() {

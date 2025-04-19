@@ -5,7 +5,7 @@ const Navbar = () => {
     return (
         <div>
             <div>
-                <nav className="flex justify-between py-1 items-center bg-white">
+                <nav className="flex justify-between py-1 items-center ">
                     <img src="./assets/2nd-logo.jpg" className="w-20 h-20" />
                     <h1 className="text-xl text-gray-800 font-bold absolute left-20">CollabSphere</h1>
                     <div className="flex items-center">
