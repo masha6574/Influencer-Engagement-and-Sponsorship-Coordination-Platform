@@ -10,7 +10,7 @@ import { SignUpProvider } from "./signup/SignUpContext";
 import "./Components/index.css";
 import LoginForm from "./Components/LoginForm";
 import CloudLayout from "./Components/CloudLayout"; // import the wrapper
-
+import SignUpSuccess from "./signup/steps/SignUpSuccess";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -56,6 +56,14 @@ const router = createBrowserRouter([
       { path: "step3", element: <SignUpStep3 /> },
     ],
   },
+  {
+    path: "/signup-success",
+    element: (
+      <CloudLayout>
+        <SignUpSuccess />
+      </CloudLayout>
+    )
+  }
 ]);
 
 function App() {

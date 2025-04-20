@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useSignup } from "../SignUpContext";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"; // ✅ Added for redirect
 import "../check.css";
 
 const SignUpStep3 = () => {
     const { formData } = useSignup();
     const [status, setStatus] = useState("");
     const [errors, setErrors] = useState({});
+    const navigate = useNavigate(); // ✅ Initialize
 
     const validateForm = () => {
         const newErrors = {};
@@ -23,6 +25,10 @@ const SignUpStep3 = () => {
                 const res = await axios.post("http://localhost:2020/api/auth/register", formData);
                 setStatus("✅ Registration successful!");
 
+                // ✅ Redirect to success page after a short delay
+                setTimeout(() => {
+                    navigate("/signup-success");
+                }, 1500);
             } catch (err) {
                 setStatus("❌ Registration failed. Please try again.");
                 console.error(err);

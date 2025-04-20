@@ -17,7 +17,7 @@ const DevicesDisplay = () => {
     return (
         <div className="relative">
             {/* Cloud Background behind everything */}
-            <HomePage />
+            {/* <HomePage /> */}
 
             {/* Content should be ABOVE the background */}
             <div className="relative z-10">
