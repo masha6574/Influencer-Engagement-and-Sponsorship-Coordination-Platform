@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import './LoginForm.css';
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -8,9 +9,31 @@ const LoginForm = () => {
   const [message, setMessage] = useState("");
   const [profile, setProfile] = useState(null); // To store user info after login
 
+  const ADMIN_EMAIL = "admin@example.com";
+  const ADMIN_PASSWORD = "admin123";
+
+  const navigate = useNavigate();
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    // Check for hardcoded admin credentials first
+    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+      setMessage("Admin login successful!");
+
+      const adminProfile = {
+        name: "Admin",
+        email: ADMIN_EMAIL,
+        role: "admin",
+      };
+
+      localStorage.setItem("token", "admin-token"); // Simulated token
+      setProfile(adminProfile);
+      navigate("/admin-dashboard");
+      return;
+    }
+
+    // Normal user login via API
     try {
       const response = await axios.post("http://localhost:2020/api/auth/login", {
         email,
@@ -70,7 +93,6 @@ const LoginForm = () => {
           <h3>Welcome, {profile.name}</h3>
           <p>Email: {profile.email}</p>
           <p>Role: {profile.role}</p>
-          {/* You can conditionally render more based on role */}
         </div>
       )}
     </div>
