@@ -11,6 +11,7 @@ import "./Components/index.css";
 import LoginForm from "./Components/LoginForm";
 import CloudLayout from "./Components/CloudLayout";
 import AdminDashboard from "./Components/AdminDashboard";
+import SignUpSuccess from "./signup/steps/SignUpSuccess";
 
 const router = createBrowserRouter([
   {
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
       </CloudLayout>
     ),
   },
+  {
+    path: "/signup-success",
+    element: <SignUpSuccess />
+  }
 ]);
 
 function App() {

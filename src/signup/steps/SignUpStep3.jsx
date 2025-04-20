@@ -28,7 +28,7 @@ const SignUpStep3 = () => {
                 // ✅ Redirect to success page after a short delay
                 setTimeout(() => {
                     navigate("/signup-success");
-                }, 1500);
+                }, 0);
             } catch (err) {
                 setStatus("❌ Registration failed. Please try again.");
                 console.error(err);
