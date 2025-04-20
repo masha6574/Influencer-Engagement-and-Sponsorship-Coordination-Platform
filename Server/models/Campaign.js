@@ -19,6 +19,10 @@ const Campaign = sequelize.define('Campaign', {
   isPublic: {
     type: DataTypes.BOOLEAN,
     defaultValue: true
+  },
+  isFlagged: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
   }
 });
 

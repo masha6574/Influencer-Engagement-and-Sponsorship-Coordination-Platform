@@ -18,6 +18,10 @@ const User = sequelize.define('User', {
   role: {
     type: DataTypes.ENUM('admin', 'sponsor', 'influencer'),
     allowNull: false
+  },
+  isFlagged: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
   }
 });
 

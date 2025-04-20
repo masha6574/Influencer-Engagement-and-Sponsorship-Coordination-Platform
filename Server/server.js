@@ -3,11 +3,13 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const { sequelize } = require('./models');
 const authRoutes = require('./routes/authRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminRoutes);
 
 const PORT = 2020;
 

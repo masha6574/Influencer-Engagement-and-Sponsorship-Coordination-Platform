@@ -1,6 +1,6 @@
 const { User, Sponsor, Influencer } = require('../models'); // adjust path as needed
 const sequelize = require('../config/database'); // ensure this is the Sequelize instance, NOT class
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const register = async (req, res) => {

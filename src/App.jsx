@@ -9,8 +9,9 @@ import SignUpLayout from "./signup/SignUpLayout";
 import { SignUpProvider } from "./signup/SignUpContext";
 import "./Components/index.css";
 import LoginForm from "./Components/LoginForm";
-import CloudLayout from "./Components/CloudLayout"; // import the wrapper
-import SignUpSuccess from "./signup/steps/SignUpSuccess";
+import CloudLayout from "./Components/CloudLayout";
+import AdminDashboard from "./Components/AdminDashboard";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -57,13 +58,13 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/signup-success",
+    path: "/admin-dashboard",
     element: (
       <CloudLayout>
-        <SignUpSuccess />
+        <AdminDashboard />
       </CloudLayout>
-    )
-  }
+    ),
+  },
 ]);
 
 function App() {
