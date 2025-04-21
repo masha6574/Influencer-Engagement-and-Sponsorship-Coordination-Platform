@@ -2,7 +2,7 @@ import "./index.css";
 
 const Card = () => {
     return (
-        <div className="w-full mt-16 max-h-[120px] overflow-hidden px-2">
+        <div className="w-full fixed bottom-0 max-h-[120px] overflow-hidden px-2">
             <div
                 className="slider"
                 style={{

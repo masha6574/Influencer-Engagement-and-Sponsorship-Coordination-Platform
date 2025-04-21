@@ -99,16 +99,18 @@ const authenticateJWT = (req, res, next) => {
     return res.status(401).json({ message: "No token provided" });
   }
 
-  const token = authHeader.split(" ")[1]; // Remove 'Bearer'
+  const token = authHeader.split(" ")[1]; // Extract the token from the 'Bearer' prefix
 
   try {
     const decoded = jwt.verify(token, "your_jwt_secret");
     req.user = decoded;
     next();
   } catch (error) {
+    console.log('Invalid token:', error); // Log the error if the token is invalid
     return res.status(403).json({ message: "Invalid token" });
   }
 };
+
 
 const getProfile = async (req, res) => {
   try {

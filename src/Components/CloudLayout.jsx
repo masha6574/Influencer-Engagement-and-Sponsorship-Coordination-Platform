@@ -4,16 +4,15 @@ import "../Components/clouds.css"; // make sure this path is correct
 
 const CloudLayout = ({ children }) => {
     return (
-        <div className="relative w-screen h-screen overflow-hidden">
+        <div className="relative w-screen min-h-screen overflow-x-hidden">
             {/* Background Clouds */}
-            <div class="clouds-container">
-                <div class="cloud cloud-1"></div>
-                <div class="cloud cloud-2"></div>
-                <div class="cloud cloud-3"></div>
-                <div class="cloud cloud-4"></div>
-                <div class="cloud cloud-5"></div>
+            <div className="clouds-container fixed top-0 left-0 w-full h-full z-0">
+                <div className="cloud cloud-1"></div>
+                <div className="cloud cloud-2"></div>
+                <div className="cloud cloud-3"></div>
+                <div className="cloud cloud-4"></div>
+                <div className="cloud cloud-5"></div>
             </div>
-
 
             {/* Foreground Content */}
             <div className="relative z-10">
@@ -22,5 +21,4 @@ const CloudLayout = ({ children }) => {
         </div>
     );
 };
-
 export default CloudLayout;

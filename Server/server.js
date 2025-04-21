@@ -4,12 +4,14 @@ const cors = require('cors');
 const { sequelize } = require('./models');
 const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const influencerRoutes = require('./routes/influencerRoutes');
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/influencer', influencerRoutes);
 
 const PORT = 2020;
 

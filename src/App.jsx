@@ -11,6 +11,7 @@ import "./Components/index.css";
 import LoginForm from "./Components/LoginForm";
 import CloudLayout from "./Components/CloudLayout";
 import AdminDashboard from "./Components/AdminDashboard";
+import InfluencerDashboard from "./Components/InfluencerDashboard";
 import SignUpSuccess from "./signup/steps/SignUpSuccess";
 
 const router = createBrowserRouter([
@@ -63,6 +64,14 @@ const router = createBrowserRouter([
     element: (
       <CloudLayout>
         <AdminDashboard />
+      </CloudLayout>
+    ),
+  },
+  {
+    path: "/influencer/dashboard",
+    element: (
+      <CloudLayout>
+        <InfluencerDashboard />
       </CloudLayout>
     ),
   },

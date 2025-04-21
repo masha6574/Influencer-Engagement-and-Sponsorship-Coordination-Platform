@@ -1,0 +1,28 @@
+
+.alert {
+    position: absolute; /* Use absolute positioning to keep it within the content flow */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    margin: 0;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    transition: transform 0.3s ease-in-out;
+}
+
+.alert-success {
+    background-color: #28a745; /* Green for success */
+    color: white;
+}
+
+.alert-danger {
+    background-color: #dc3545; /* Red for error */
+    color: white;
+}
+
+.content-wrapper {
+    padding-top: 60px; /* This will push down the content so the alert doesn't overlap */
+}

@@ -26,7 +26,7 @@ const Campaign = sequelize.define('Campaign', {
   }
 });
 
-Campaign.belongsTo(Sponsor, { foreignKey: 'sponsorId', onDelete: 'CASCADE' });
+Campaign.belongsTo(Sponsor, { foreignKey: 'sponsorId', onDelete: 'CASCADE', as: 'sponsor', });
 Sponsor.hasMany(Campaign, { foreignKey: 'sponsorId' });
 
 module.exports = Campaign;
