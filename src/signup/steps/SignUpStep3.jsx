@@ -145,7 +145,7 @@ const SignUpStep3 = () => {
                         type="button"
                         onClick={handleSubmit}
                         disabled={isSubmitting || !canSubmit()}
-                        className="px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-6 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {isSubmitting ? 'Submitting...' : 'Confirm & Register'}
                     </button>

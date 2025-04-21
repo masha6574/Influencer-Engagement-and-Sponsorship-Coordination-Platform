@@ -24,8 +24,8 @@ const DevicesDisplay = () => {
                 <Navbar />
 
                 {/* Top Heading */}
-                <div className="text-center text-4xl font-bold mt-10 mb-4 text-gray-800">
-                    Welcome to Our Experience
+                <div className="text-center text-4xl font-bold mt-30 mb-4 text-gray-800">
+                    Connecting Brands with Influencers, Empowering Seamless Campaigns.
                 </div>
 
                 {/* Devices Section */}
