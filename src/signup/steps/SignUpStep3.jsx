@@ -17,6 +17,7 @@ const SignUpStep3 = () => {
         let objectUrl = null;
         if (profileImageFile instanceof File) {
             objectUrl = URL.createObjectURL(profileImageFile);
+            console.log(objectUrl);
             setImagePreview(objectUrl);
         } else {
             setImagePreview(null);
@@ -52,12 +53,18 @@ const SignUpStep3 = () => {
         }
 
         if (formData.role === 'influencer' && profileImageFile instanceof File) {
-            dataToSend.append('profileImage', profileImageFile, profileImageFile.name);
+            dataToSend.append('profileImage', profileImageFile);
         }
 
         try {
+            console.log("Data to send:");
+            for (let [key, value] of dataToSend.entries()) {
+                console.log(`${key}: ${value}`);
+            }
+
             const res = await axios.post("http://localhost:2020/api/auth/register", dataToSend);
             setStatus("✅ Registration successful!");
+
             setTimeout(() => navigate("/signup-success"), 1500);
         } catch (err) {
             console.error("Registration Error:", err.response || err);
