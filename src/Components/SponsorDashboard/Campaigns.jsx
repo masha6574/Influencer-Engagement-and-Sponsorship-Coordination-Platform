@@ -56,16 +56,6 @@ const Campaigns = () => {
         }
     };
 
-    // Handle clicking on a campaign (toggle ads display)
-    const handleCampaignClick = (campaignId) => {
-        if (selectedCampaignId === campaignId) {
-            setSelectedCampaignId(null); // Close the campaign if already selected
-        } else {
-            setSelectedCampaignId(campaignId);
-            fetchAdsForCampaign(campaignId); // Fetch ads when campaign is clicked
-        }
-    };
-
     // Handle submission for creating or editing campaigns
     const handleCampaignSubmit = async (e) => {
         e.preventDefault();
@@ -161,172 +151,180 @@ const Campaigns = () => {
     };
 
     return (
-        <div className="p-6">
-            <h2 className="text-2xl font-bold mb-4">Manage Campaigns</h2>
+        <div className="p-6 space-y-6 h-screen overflow-y-auto">
+            <h2 className="text-3xl font-bold text-gray-800 mb-6 ml-[22%]">Manage Your Campaigns</h2>
 
-            {error && <p className="text-red-500 mb-4">{error}</p>}
+            {error && <p className="text-red-500 text-center">{error}</p>}
 
             {/* Campaign Form */}
-            <div className="mb-4">
-                <h3 className="text-xl mb-2">{isEditingCampaign ? 'Edit Campaign' : 'Create Campaign'}</h3>
+            <div className="max-w-lg mx-[15%] p-6 rounded-lg">
+                <h3 className="text-xl font-semibold mb-4">{isEditingCampaign ? 'Edit Campaign' : 'Create Campaign'}</h3>
                 <form onSubmit={handleCampaignSubmit}>
-                    <input
-                        type="text"
-                        className="mb-2 p-2 border rounded"
-                        placeholder="Title"
-                        value={newCampaign.title}
-                        onChange={(e) => setNewCampaign({ ...newCampaign, title: e.target.value })}
-                    />
-                    <textarea
-                        className="mb-2 p-2 border rounded"
-                        placeholder="Description"
-                        value={newCampaign.description}
-                        onChange={(e) => setNewCampaign({ ...newCampaign, description: e.target.value })}
-                    />
-                    <input
-                        type="text"
-                        className="mb-2 p-2 border rounded"
-                        placeholder="Category"
-                        value={newCampaign.category}
-                        onChange={(e) => setNewCampaign({ ...newCampaign, category: e.target.value })}
-                    />
-                    <input
-                        type="number"
-                        className="mb-2 p-2 border rounded"
-                        placeholder="Budget"
-                        value={newCampaign.budget}
-                        onChange={(e) => setNewCampaign({ ...newCampaign, budget: e.target.value })}
-                    />
-                    <label>
-                        Public:
+                    <div className="mb-4">
+                        <label className="block text-gray-700">Title</label>
+                        <input
+                            type="text"
+                            className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Campaign Title"
+                            value={newCampaign.title}
+                            onChange={(e) => setNewCampaign({ ...newCampaign, title: e.target.value })}
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-700">Description</label>
+                        <textarea
+                            className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Campaign Description"
+                            value={newCampaign.description}
+                            onChange={(e) => setNewCampaign({ ...newCampaign, description: e.target.value })}
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-700">Category</label>
+                        <input
+                            type="text"
+                            className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Campaign Category"
+                            value={newCampaign.category}
+                            onChange={(e) => setNewCampaign({ ...newCampaign, category: e.target.value })}
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-700">Budget</label>
+                        <input
+                            type="number"
+                            className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Campaign Budget"
+                            value={newCampaign.budget}
+                            onChange={(e) => setNewCampaign({ ...newCampaign, budget: e.target.value })}
+                        />
+                    </div>
+                    <div className="mb-4 flex items-center">
                         <input
                             type="checkbox"
                             checked={newCampaign.isPublic}
                             onChange={(e) => setNewCampaign({ ...newCampaign, isPublic: e.target.checked })}
+                            className="mr-2"
                         />
-                    </label>
-                    <button type="submit" className="bg-blue-500 text-white p-2 rounded mt-2">
+                        <label className="text-gray-700">Public Campaign</label>
+                    </div>
+                    <button
+                        type="submit"
+                        className="w-full bg-indigo-600 text-white p-3 rounded-md hover:bg-indigo-700 transition duration-300"
+                    >
                         {isEditingCampaign ? 'Update Campaign' : 'Create Campaign'}
                     </button>
                 </form>
             </div>
 
             {/* Display all campaigns */}
-            <div className="grid gap-4">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {campaigns.length === 0 ? (
                     <p className="text-gray-600">No campaigns found.</p>
                 ) : (
                     campaigns.map((campaign) => (
                         <div
                             key={campaign.id}
-                            className="border p-4 rounded bg-white shadow cursor-pointer"
-                            onClick={() => handleCampaignClick(campaign.id)}
+                            className="border p-4 rounded-lg shadow-md cursor-pointer hover:shadow-lg transition"
+                            onClick={() => {
+                                setSelectedCampaignId(campaign.id);
+                                fetchAdsForCampaign(campaign.id);
+                            }}
                         >
-                            <h3 className="text-lg font-semibold">{campaign.title}</h3>
-                            <p>{campaign.description}</p>
-                            <p><strong>Category:</strong> {campaign.category}</p>
-                            <p><strong>Budget:</strong> ${campaign.budget}</p>
-                            <p><strong>Public:</strong> {campaign.isPublic ? 'Yes' : 'No'}</p>
-
-                            {/* Edit and delete campaign buttons */}
-                            <button
-                                className="bg-yellow-500 text-white p-2 rounded mt-2"
-                                onClick={() => handleEditCampaign(campaign)}
-                            >
-                                Edit Campaign
-                            </button>
-                            <button
-                                className="bg-red-500 text-white p-2 rounded mt-2"
-                                onClick={() => handleDeleteCampaign(campaign.id)}
-                            >
-                                Delete Campaign
-                            </button>
-
-                            {/* Display ad requests for the selected campaign */}
-                            {selectedCampaignId === campaign.id && campaignAds[campaign.id] && (
-                                <div className="mt-4" onClick={(e) => e.stopPropagation()}>
-                                    <h4 className="font-semibold">Ad Requests:</h4>
-
-                                    {/* Ad Request Form */}
-                                    <form
-                                        onSubmit={(e) => handleAdRequestSubmit(e, campaign.id)}
-                                        className="flex flex-col space-y-2"
-                                    >
-                                        <input
-                                            type="text"
-                                            className="p-2 border rounded"
-                                            placeholder="Message"
-                                            value={newAdRequest.message}
-                                            onChange={(e) =>
-                                                setNewAdRequest({ ...newAdRequest, message: e.target.value })
-                                            }
-                                            onClick={(e) => e.stopPropagation()}
-                                        />
-                                        <input
-                                            type="text"
-                                            className="p-2 border rounded"
-                                            placeholder="Proposed Terms"
-                                            value={newAdRequest.proposedTerms}
-                                            onChange={(e) =>
-                                                setNewAdRequest({ ...newAdRequest, proposedTerms: e.target.value })
-                                            }
-                                            onClick={(e) => e.stopPropagation()}
-                                        />
-                                        <button
-                                            type="submit"
-                                            className="bg-blue-500 text-white p-2 rounded"
-                                            onClick={(e) => e.stopPropagation()}
-                                        >
-                                            {isEditingAdRequest ? 'Update Ad Request' : 'Create Ad Request'}
-                                        </button>
-                                    </form>
-
-                                    {/* Existing Ad Requests */}
-                                    {campaignAds[campaign.id].map((adRequest) => (
-                                        <div key={adRequest.id} className="border p-2 rounded mt-2">
-                                            <p>{adRequest.message}</p>
-                                            <p>Status: {adRequest.status}</p>
-                                            {/* Conditionally display Accepted By when the status is 'Accepted' */}
-                                            {adRequest.status === 'accepted' && adRequest.influencerId && (
-                                                <p><strong>Accepted by (Influencer ID):</strong> {adRequest.influencerId}</p>
-                                            )}
-                                            <p><strong>Proposed Terms:</strong> {adRequest.proposedTerms}</p>
-
-                                            {/* Edit and delete ad request buttons */}
-                                            <button
-                                                className="bg-yellow-500 text-white p-2 rounded mt-2"
-                                                onClick={() => handleEditAdRequest(adRequest)}
-                                            >
-                                                Edit Ad Request
-                                            </button>
-                                            <button
-                                                className="bg-red-500 text-white p-2 rounded mt-2"
-                                                onClick={() => handleDeleteAdRequest(adRequest.id, campaign.id)}
-                                            >
-                                                Delete Ad Request
-                                            </button>
-                                        </div>
-                                    ))}
-
-                                    {campaign.acceptedInfluencers && campaign.acceptedInfluencers.length > 0 && (
-                                        <div className="mt-4">
-                                            <h4 className="font-semibold">Accepted Influencers:</h4>
-                                            <ul className="list-disc list-inside">
-                                                {campaign.acceptedInfluencers.map((influencer) => (
-                                                    <li key={influencer.influencerId}>{influencer.influencerName}</li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    )}
-
-
-                                </div>
-                            )}
-
+                            <h3 className="text-lg font-semibold text-gray-800">{campaign.title}</h3>
+                            <p className="text-gray-600">{campaign.description}</p>
+                            <div className="mt-2 flex justify-between items-center">
+                                <span className="text-sm text-indigo-600">{campaign.category}</span>
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleEditCampaign(campaign);
+                                    }}
+                                    className="bg-indigo-600 text-white p-2 rounded-md hover:bg-indigo-700"
+                                >
+                                    Edit
+                                </button>
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleDeleteCampaign(campaign.id);
+                                    }}
+                                    className="bg-red-600 text-white p-2 rounded-md hover:bg-red-700"
+                                >
+                                    Delete
+                                </button>
+                            </div>
                         </div>
                     ))
                 )}
             </div>
+
+            {/* Show Ads for the selected campaign */}
+            {selectedCampaignId && (
+                <div className="space-y-4">
+                    <h3 className="text-xl font-semibold mb-4">Ad Requests for Campaign</h3>
+                    <div className="flex flex-col space-y-4 w-[75%]">
+                        {campaignAds[selectedCampaignId] && campaignAds[selectedCampaignId].length > 0 ? (
+                            campaignAds[selectedCampaignId].map((adRequest) => (
+                                <div
+                                    key={adRequest.id}
+                                    className="border p-4 rounded-lg shadow-md"
+                                >
+                                    <p><strong>Message: </strong>{adRequest.message}</p>
+                                    <p><strong>Proposed Terms: </strong>{adRequest.proposedTerms}</p>
+                                    <div className="mt-2 flex absolute">
+                                        <button
+                                            onClick={() => handleEditAdRequest(adRequest)}
+                                            className="bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            onClick={() => handleDeleteAdRequest(adRequest.id, selectedCampaignId)}
+                                            className="bg-red-600 text-white p-2 rounded-md hover:bg-red-700"
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            <p>No ad requests found for this campaign.</p>
+                        )}
+
+                        {/* Ad Request Form */}
+                        <div className="max-w-lg mx-[15%] p-6 rounded-lg shadow-md">
+                            <h3 className="text-xl font-semibold mb-4">{isEditingAdRequest ? 'Edit Ad Request' : 'Create Ad Request'}</h3>
+                            <form onSubmit={(e) => handleAdRequestSubmit(e, selectedCampaignId)}>
+                                <div className="mb-4">
+                                    <label className="block text-gray-700">Message</label>
+                                    <textarea
+                                        className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        placeholder="Ad Request Message"
+                                        value={newAdRequest.message}
+                                        onChange={(e) => setNewAdRequest({ ...newAdRequest, message: e.target.value })}
+                                    />
+                                </div>
+                                <div className="mb-4">
+                                    <label className="block text-gray-700">Proposed Terms</label>
+                                    <textarea
+                                        className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        placeholder="Proposed Terms"
+                                        value={newAdRequest.proposedTerms}
+                                        onChange={(e) => setNewAdRequest({ ...newAdRequest, proposedTerms: e.target.value })}
+                                    />
+                                </div>
+                                <button
+                                    type="submit"
+                                    className="w-full bg-indigo-600 text-white p-3 rounded-md hover:bg-indigo-700 transition duration-300"
+                                >
+                                    {isEditingAdRequest ? 'Update Ad Request' : 'Create Ad Request'}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

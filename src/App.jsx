@@ -87,15 +87,12 @@ const router = createBrowserRouter([
   {
     path: "/sponsor-dashboard",
     element: (
-      <CloudLayout>
         <DashboardLayout />
-      </CloudLayout>
     ),
     children: [
-      { path: "home", element: <SponsorHome /> },
-      { path: "campaign", element: <Campaigns /> },
-      { path: "messages", element: <Messages /> },
-      { path: "settings", element: <Settings /> },
+      { path: "home", element: (<CloudLayout><SponsorHome /></CloudLayout>) },
+      { path: "campaign", element: (<CloudLayout><Campaigns /></CloudLayout> )},
+      { path: "settings", element: (<CloudLayout><Settings /></CloudLayout> )},
     ],
   }
 ]);

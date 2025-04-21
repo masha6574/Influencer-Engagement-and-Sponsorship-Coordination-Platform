@@ -272,5 +272,4 @@ const acceptCampaign = async (req, res) => {
 };
 
 
-
 module.exports = { getProfile, updateProfile, getPublicCampaigns, acceptCampaign, getAdRequests, handleAdRequest };
