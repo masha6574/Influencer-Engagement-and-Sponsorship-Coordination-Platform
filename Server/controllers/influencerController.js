@@ -65,19 +65,53 @@ const updateProfile = async (req, res) => {
 };
 
 // GET /api/influencer/ad-requests
-exports.getAdRequests = async (req, res) => {
+const getAdRequests = async (req, res) => {
     try {
-        const requests = await AdRequest.findAll({
-            where: { influencerId: req.user.id }, // Use userId from JWT to filter requests
-            order: [['createdAt', 'DESC']]
+        // Step 1: Get influencer by userId from req.user
+        const influencer = await Influencer.findOne({ where: { userId: req.user.userId } });
+        if (!influencer) {
+            return res.status(404).json({ message: 'Influencer not found' });
+        }
+
+        const influencerId = influencer.id;
+
+        // Step 2: Find campaigns accepted by this influencer
+        const acceptedCampaigns = await influencer.getCampaigns(); // uses belongsToMany
+
+        const acceptedCampaignIds = acceptedCampaigns.map(c => c.id);
+
+        if (acceptedCampaignIds.length === 0) {
+            return res.status(404).json({ message: 'No accepted campaigns for this influencer' });
+        }
+
+        // Step 3: Fetch AdRequests only for those campaigns
+        const adRequests = await AdRequest.findAll({
+            where: {
+                campaignId: acceptedCampaignIds, // Fetch ad requests for accepted campaigns
+            },
+            include: [
+                {
+                    model: Campaign,
+                    required: true, // Ensures the ad request has a valid campaign
+                    include: [
+                        {
+                            model: Sponsor, // Include sponsor details from the Campaign
+                            required: true, // Ensures that the campaign has a sponsor
+                            attributes: ['id', 'companyName', 'industry', 'budget'] // Choose the relevant sponsor fields to include
+                        }
+                    ]
+                }
+            ],
+            order: [['createdAt', 'DESC']] // Order by creation date
         });
 
-        res.json(requests);
+        res.json(adRequests);
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server error', error: err.message });
     }
 };
+
 
 // POST /api/influencer/ad-requests/:id/:action
 exports.handleAdRequest = async (req, res) => {
@@ -117,9 +151,17 @@ exports.handleAdRequest = async (req, res) => {
 // GET /api/campaigns
 const getPublicCampaigns = async (req, res) => {
     const { category, minBudget } = req.query;
-    const influencerId = req.user.userId; // ✅ define influencerId
 
     try {
+        // ✅ Fetch influencer using the userId from req.user
+        const influencer = await Influencer.findOne({ where: { userId: req.user.userId } });
+
+        if (!influencer) {
+            return res.status(404).json({ message: 'Influencer not found' });
+        }
+
+        const influencerId = influencer.id;
+
         const where = {
             isPublic: true,
         };
@@ -183,13 +225,21 @@ const acceptCampaign = async (req, res) => {
             return res.status(404).json({ message: 'Campaign not found or not public' });
         }
 
-        const influencerExists = await campaign.hasInfluencer(req.user.userId);
+        // Fetch influencer using the userId from req.user
+        const influencer = await Influencer.findOne({ where: { userId: req.user.userId } });
+
+        if (!influencer) {
+            return res.status(404).json({ message: 'Influencer not found' });
+        }
+
+        // Check if the influencer has already accepted this campaign
+        const influencerExists = await campaign.hasInfluencer(influencer.id);
         if (influencerExists) {
             return res.status(400).json({ message: 'You have already accepted this campaign' });
         }
 
         // Record the influencer acceptance using the junction table `AcceptedCampaigns`
-        await campaign.addInfluencer(req.user.userId, { through: { acceptedAt: new Date() } });
+        await campaign.addInfluencer(influencer.id, { through: { acceptedAt: new Date() } });
 
         res.json({ message: 'Campaign accepted' });
     } catch (err) {
@@ -198,4 +248,6 @@ const acceptCampaign = async (req, res) => {
     }
 };
 
-module.exports = { getProfile, updateProfile, getPublicCampaigns, acceptCampaign };
+
+
+module.exports = { getProfile, updateProfile, getPublicCampaigns, acceptCampaign, getAdRequests };

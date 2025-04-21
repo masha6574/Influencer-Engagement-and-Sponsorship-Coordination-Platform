@@ -4,7 +4,6 @@
     height: 100%;
     top: 0;
     left: 0;
-    /* overflow: hidden; */
     z-index: 0;
     pointer-events: none;
 }
@@ -20,6 +19,11 @@
     filter: blur(60px);
     transition: all 1.5s ease-in-out;
     will-change: transform, opacity;
+
+    /* Prevent layout overflow */
+    max-width: 200vw;
+    max-height: 200vh;
+    pointer-events: none;
 }
 
 /* Cloud 1 - Top Left */
@@ -118,7 +122,7 @@
     }
 
     70% {
-        transform: scale(4);
+        transform: scale(3.5);
         opacity: 0.8;
     }
 
@@ -145,7 +149,7 @@
     }
 
     60% {
-        transform: scale(4.5);
+        transform: scale(3.5);
         opacity: 0.85;
     }
 
@@ -172,7 +176,7 @@
     }
 
     70% {
-        transform: scale(4);
+        transform: scale(3.5);
         opacity: 0.85;
     }
 
@@ -200,7 +204,7 @@
     }
 
     75% {
-        transform: scale(4);
+        transform: scale(3.5);
         opacity: 0.85;
     }
 

@@ -1,18 +1,54 @@
 const Campaign = require('../models/Campaign');
 const AdRequest = require('../models/AdRequest');
+const User = require('../models/User');
+const Sponsor = require('../models/Sponsor');
+const Influencer = require('../models/Influencer');
 const { Op } = require('sequelize');
 
 // GET all campaigns for the logged-in sponsor
 const getAllMyCampaigns = async (req, res) => {
     try {
-        const sponsorId = req.user.userId;
-        const campaigns = await Campaign.findAll({ where: { sponsorId } });
-        res.status(200).json(campaigns);
+        const userId = req.user.userId;
+
+        const campaigns = await Campaign.findAll({
+            where: { userId },
+            include: [
+                {
+                    model: Influencer,
+                    as: 'Influencers', // Optional alias depending on your setup
+                    through: { attributes: [] },
+                    include: [
+                        {
+                            model: User, // Assuming Influencer has a relationship with User
+                            as: 'User',
+                            attributes: ['name'] // Include the name column from the User table
+                        }
+                    ]
+                }
+            ]
+        });
+
+        const formattedCampaigns = campaigns.map(campaign => {
+            const json = campaign.toJSON();
+            json.acceptedInfluencers = json.Influencers.map(influencer => {
+                return {
+                    influencerId: influencer.id,
+                    influencerName: influencer.User.name // Access the name from the User table
+                };
+            }) || [];
+            delete json.Influencers;
+            return json;
+        });
+        
+        res.status(200).json(formattedCampaigns);
+
     } catch (error) {
         console.error('Error fetching campaigns:', error);
         res.status(500).json({ error: 'Failed to fetch campaigns.' });
     }
 };
+
+
 
 // POST create a new campaign
 const createCampaign = async (req, res) => {
@@ -39,10 +75,10 @@ const createCampaign = async (req, res) => {
 // PUT update an existing campaign
 const updateCampaign = async (req, res) => {
     try {
-        const sponsorId = req.user.userId;
+        const userId = req.user.userId;
         const campaignId = req.params.id;
 
-        const campaign = await Campaign.findOne({ where: { id: campaignId, sponsorId } });
+        const campaign = await Campaign.findOne({ where: { id: campaignId, userId } });
 
         if (!campaign) {
             return res.status(404).json({ error: 'Campaign not found or unauthorized.' });
@@ -62,10 +98,10 @@ const updateCampaign = async (req, res) => {
 // DELETE a campaign
 const deleteCampaign = async (req, res) => {
     try {
-        const sponsorId = req.user.userId;
+        const userId = req.user.userId;
         const campaignId = req.params.id;
 
-        const campaign = await Campaign.findOne({ where: { id: campaignId, sponsorId } });
+        const campaign = await Campaign.findOne({ where: { id: campaignId, userId } });
 
         if (!campaign) {
             return res.status(404).json({ error: 'Campaign not found or unauthorized.' });
@@ -86,11 +122,11 @@ const deleteCampaign = async (req, res) => {
 const createAdRequest = async (req, res) => {
     try {
         const { campaignId } = req.params;  // Get campaignId from params
-        const sponsorId = req.user.userId;
+        const userId = req.user.userId;
         const { influencerId, message, proposedTerms } = req.body;
 
         // Check if the campaign belongs to the logged-in sponsor
-        const campaign = await Campaign.findOne({ where: { id: campaignId, sponsorId } });
+        const campaign = await Campaign.findOne({ where: { id: campaignId, userId } });
         if (!campaign) {
             return res.status(404).json({ error: 'Campaign not found or unauthorized.' });
         }
@@ -114,10 +150,10 @@ const createAdRequest = async (req, res) => {
 const getAdRequestsForCampaign = async (req, res) => {
     try {
         const { campaignId } = req.params;
-        const sponsorId = req.user.userId;
+        const userId = req.user.userId;
 
         // Check if the campaign belongs to the logged-in sponsor
-        const campaign = await Campaign.findOne({ where: { id: campaignId, sponsorId } });
+        const campaign = await Campaign.findOne({ where: { id: campaignId, userId } });
         if (!campaign) {
             return res.status(404).json({ error: 'Campaign not found or unauthorized.' });
         }
@@ -137,7 +173,7 @@ const updateAdRequest = async (req, res) => {
     try {
         const { adRequestId } = req.params;
         const { status, message, proposedTerms } = req.body;
-        const sponsorId = req.user.userId;
+        const userId = req.user.userId;
 
         // Find the ad request to update
         const adRequest = await AdRequest.findOne({ where: { id: adRequestId } });
@@ -146,7 +182,7 @@ const updateAdRequest = async (req, res) => {
         }
 
         // Check if the ad request belongs to the specified campaign and sponsor
-        const campaign = await Campaign.findOne({ where: { id: adRequest.campaignId, sponsorId } });
+        const campaign = await Campaign.findOne({ where: { id: adRequest.campaignId, userId } });
         if (!campaign) {
             return res.status(403).json({ error: 'Unauthorized to update this ad request.' });
         }
@@ -165,7 +201,7 @@ const updateAdRequest = async (req, res) => {
 const deleteAdRequest = async (req, res) => {
     try {
         const { adRequestId } = req.params;
-        const sponsorId = req.user.userId;
+        const userId = req.user.userId;
 
         // Find the ad request to delete
         const adRequest = await AdRequest.findOne({ where: { id: adRequestId } });
@@ -174,7 +210,7 @@ const deleteAdRequest = async (req, res) => {
         }
 
         // Check if the ad request belongs to the specified campaign and sponsor
-        const campaign = await Campaign.findOne({ where: { id: adRequest.campaignId, sponsorId } });
+        const campaign = await Campaign.findOne({ where: { id: adRequest.campaignId, userId } });
         if (!campaign) {
             return res.status(403).json({ error: 'Unauthorized to delete this ad request.' });
         }

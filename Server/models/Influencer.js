@@ -33,4 +33,3 @@ Influencer.belongsToMany(Campaign, { through: 'AcceptedCampaigns', foreignKey: '
 Campaign.belongsToMany(Influencer, { through: 'AcceptedCampaigns', foreignKey: 'campaignId' });
 
 module.exports = Influencer;
-module.exports = Influencer;

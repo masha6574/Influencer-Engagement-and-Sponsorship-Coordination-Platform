@@ -17,7 +17,7 @@ const InfluencerDashboard = () => {
         const fetchData = async () => {
             try {
                 await fetchProfile();
-                //await fetchAdRequests();
+                await fetchAdRequests();
                 await fetchCampaigns();
                 setLoading(false);
             } catch (err) {
@@ -60,7 +60,11 @@ const InfluencerDashboard = () => {
 
     const fetchAdRequests = async () => {
         try {
-            const res = await axios.get('/ad-requests'); // Updated API endpoint
+            const res = await axios.get('http://localhost:2020/api/influencer/ad-requests', {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}` // ✅ Make sure token is stored
+                }
+            });
             const data = res.data;
             if (Array.isArray(data)) {
                 setAdRequests(data);
@@ -75,6 +79,7 @@ const InfluencerDashboard = () => {
             console.error("Error fetching ad requests:", err);
         }
     };
+    
 
     const fetchCampaigns = async () => {
         try {

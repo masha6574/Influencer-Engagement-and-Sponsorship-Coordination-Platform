@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { getProfile, updateProfile, getPublicCampaigns, acceptCampaign } = require('../controllers/influencerController');
+const { getProfile, updateProfile, getPublicCampaigns, acceptCampaign, getAdRequests } = require('../controllers/influencerController');
 const { authenticateJWT } = require('../controllers/authController');
 
 
@@ -12,6 +12,8 @@ router.put('/profile', authenticateJWT, updateProfile);
 router.get('/open-campaigns', authenticateJWT, getPublicCampaigns);
 
 router.post('/campaigns/:id/accept', authenticateJWT, acceptCampaign);
+
+router.get('/ad-requests', authenticateJWT, getAdRequests);
 // // Get ad requests for the influencer
 // router.get('/ad-requests', authenticateJWT, influencerController.getAdRequests);
 

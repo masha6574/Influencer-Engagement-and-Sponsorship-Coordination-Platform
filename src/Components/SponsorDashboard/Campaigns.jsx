@@ -36,9 +36,9 @@ const Campaigns = () => {
         }
     };
 
-    // useEffect(() => {
-    //     fetchCampaigns();
-    // }, []);
+    useEffect(() => {
+        fetchCampaigns();
+    }, []);
 
     // Fetch ads for a specific campaign
     const fetchAdsForCampaign = async (campaignId) => {
@@ -88,7 +88,7 @@ const Campaigns = () => {
                     isPublic: false,
                 });
                 setIsEditingCampaign(false); // Reset editing state
-                //fetchCampaigns(); // Refresh campaign list
+                fetchCampaigns(); // Refresh campaign list
             }
         } catch (err) {
             setError('Failed to create/update campaign');
@@ -257,7 +257,9 @@ const Campaigns = () => {
                                             className="p-2 border rounded"
                                             placeholder="Message"
                                             value={newAdRequest.message}
-                                            onChange={(e) => setNewAdRequest({ ...newAdRequest, message: e.target.value })}
+                                            onChange={(e) =>
+                                                setNewAdRequest({ ...newAdRequest, message: e.target.value })
+                                            }
                                             onClick={(e) => e.stopPropagation()}
                                         />
                                         <input
@@ -265,7 +267,9 @@ const Campaigns = () => {
                                             className="p-2 border rounded"
                                             placeholder="Proposed Terms"
                                             value={newAdRequest.proposedTerms}
-                                            onChange={(e) => setNewAdRequest({ ...newAdRequest, proposedTerms: e.target.value })}
+                                            onChange={(e) =>
+                                                setNewAdRequest({ ...newAdRequest, proposedTerms: e.target.value })
+                                            }
                                             onClick={(e) => e.stopPropagation()}
                                         />
                                         <button
@@ -277,12 +281,9 @@ const Campaigns = () => {
                                         </button>
                                     </form>
 
-
+                                    {/* Existing Ad Requests */}
                                     {campaignAds[campaign.id].map((adRequest) => (
-                                        <div
-                                            key={adRequest.id}
-                                            className="border p-2 rounded mt-2"
-                                        >
+                                        <div key={adRequest.id} className="border p-2 rounded mt-2">
                                             <p>{adRequest.message}</p>
                                             <p><strong>Proposed Terms:</strong> {adRequest.proposedTerms}</p>
 
@@ -301,8 +302,22 @@ const Campaigns = () => {
                                             </button>
                                         </div>
                                     ))}
+
+                                    {campaign.acceptedInfluencers && campaign.acceptedInfluencers.length > 0 && (
+                                        <div className="mt-4">
+                                            <h4 className="font-semibold">Accepted Influencers:</h4>
+                                            <ul className="list-disc list-inside">
+                                                {campaign.acceptedInfluencers.map((influencer) => (
+                                                    <li key={influencer.influencerId}>{influencer.influencerName}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
+
+
                                 </div>
                             )}
+
                         </div>
                     ))
                 )}
