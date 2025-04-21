@@ -6,8 +6,8 @@ require('dotenv').config();
 console.log("Loaded JWT_SECRET:", process.env.JWT_SECRET);
 const register = async (req, res) => {
   const { name, email, password, role, company, budget, industry, category, niche, reach } = req.body;
+  const profileImage = req.file ? req.file.path : null;
 
-  // Start transaction
   const t = await sequelize.transaction();
 
   try {
@@ -28,7 +28,7 @@ const register = async (req, res) => {
       role,
     }, { transaction: t });
 
-    // Role-based creation
+    // Role-based creation (Sponsor or Influencer)
     if (role === 'sponsor') {
       await Sponsor.create({
         userId: newUser.id,
@@ -36,27 +36,26 @@ const register = async (req, res) => {
         industry,
         budget,
       }, { transaction: t });
-
     } else if (role === 'influencer') {
       await Influencer.create({
         userId: newUser.id,
         category,
         niche,
         reach,
+        profileImageUrl: profileImage,
       }, { transaction: t });
     }
 
-    // Everything went fine
     await t.commit();
     return res.status(201).json({ message: "User registered successfully", user: newUser });
 
   } catch (error) {
-    // Rollback on error
     await t.rollback();
     console.error("Transaction error during registration:", error);
     return res.status(500).json({ message: "Server error, registration failed" });
   }
 };
+
 
 const login = async (req, res) => {
   const { email, password } = req.body;

@@ -24,9 +24,11 @@ const DevicesDisplay = () => {
                 <Navbar />
 
                 {/* Top Heading */}
-                <div className="text-center text-4xl font-bold mt-30 mb-4 text-gray-800">
-                    Connecting Brands with Influencers, Empowering Seamless Campaigns.
+                <div className="text-center text-2xl sm:text-4xl font-semibold leading-snug mt-25 mb-4 text-rose-700 tracking-wide font-poppins">
+                    Connecting Brands with Influencers,<br />
+                    Empowering Seamless Campaigns.
                 </div>
+
 
                 {/* Devices Section */}
                 <div className="relative flex justify-center items-end mt-16 mb-24">
