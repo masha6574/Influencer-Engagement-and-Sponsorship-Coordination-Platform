@@ -75,11 +75,11 @@ const InfluencerDashboard = () => {
                 setAdRequests([]);
             }
         } catch (err) {
-            setError('Failed to fetch ad requests. Please try again.');
+            //setError('Failed to fetch ad requests. Please try again.');
             console.error("Error fetching ad requests:", err);
         }
     };
-    
+
 
     const fetchCampaigns = async () => {
         try {
@@ -153,10 +153,27 @@ const InfluencerDashboard = () => {
 
     const handleAdAction = async (id, action) => {
         try {
-            await axios.post(`/ad-requests/${id}/${action}`); // Updated API endpoint
-            fetchAdRequests();
+            const token = localStorage.getItem('token');
+            if (!token) {
+                setError('Authentication token is missing. Please log in again.');
+                return;
+            }
+    
+            const response = await axios.post(
+                `http://localhost:2020/api/influencer/ad-requests/${id}/${action}`,
+                {},
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                }
+            );
+    
+            console.log(response.data.message); // optional: success log
+            fetchAdRequests(); // refresh data
         } catch (err) {
-            setError('Error handling ad request. Please try again.');
+            const errorMsg = err.response?.data?.message || 'Error handling ad request.';
+            setError(errorMsg);
             console.error("Error handling ad request:", err);
         }
     };
@@ -168,7 +185,7 @@ const InfluencerDashboard = () => {
     const handleAcceptCampaign = async (campaignId) => {
         try {
             const token = localStorage.getItem('token'); // Or sessionStorage, depending on where you store it
-    
+
             const response = await axios.post(
                 `http://localhost:2020/api/influencer/campaigns/${campaignId}/accept`,
                 {}, // No body needed
@@ -178,7 +195,7 @@ const InfluencerDashboard = () => {
                     }
                 }
             );
-    
+
             if (response.data.message === 'Campaign accepted') {
                 fetchCampaigns(); // Refresh campaigns
             }
@@ -297,19 +314,30 @@ const InfluencerDashboard = () => {
                 {adRequests.length === 0 ? (
                     <p>No ad requests at the moment.</p>
                 ) : (
-                    adRequests.map((req) => (
-                        <div key={req.id} className="border p-3 rounded mb-3">
-                            <p><strong>Brand:</strong> {req.brand}</p>
-                            <p><strong>Details:</strong> {req.details}</p>
-                            <div className="flex gap-2 mt-2">
-                                <button onClick={() => handleAdAction(req.id, 'accept')} className="bg-green-500 text-white px-3 py-1 rounded">Accept</button>
-                                <button onClick={() => handleAdAction(req.id, 'reject')} className="bg-red-500 text-white px-3 py-1 rounded">Reject</button>
-                                <button onClick={() => handleAdAction(req.id, 'negotiate')} className="bg-yellow-500 text-white px-3 py-1 rounded">Negotiate</button>
+                    adRequests.map((req) => {
+                        return (
+                            <div key={req.id} className="border p-3 rounded mb-3">
+                                <p><strong>Brand:</strong> {req.Campaign.Sponsor.companyName}</p>
+                                <p><strong>Details:</strong> {req.message}</p>
+                                <p><strong>Status:</strong> {req.status}</p> {/* Display current status */}
+                                <div className="flex gap-2 mt-2">
+                                    {/* Display action buttons based on current status */}
+                                    {req.status === 'pending' && (
+                                        <>
+                                            <button onClick={() => handleAdAction(req.id, 'accept')} className="bg-green-500 text-white px-3 py-1 rounded">Accept</button>
+                                            <button onClick={() => handleAdAction(req.id, 'reject')} className="bg-red-500 text-white px-3 py-1 rounded">Reject</button>
+                                        </>
+                                    )}
+                                    {req.status !== 'pending' && (
+                                        <p className="text-gray-500">This request has been {req.status}.</p>
+                                    )}
+                                </div>
                             </div>
-                        </div>
-                    ))
+                        );
+                    })
                 )}
             </div>
+
 
             {/* Public Campaigns */}
             <div className="border p-4 rounded-lg shadow-sm bg-white md:col-span-2">
@@ -349,17 +377,17 @@ const InfluencerDashboard = () => {
                                     <p><strong>Description:</strong> {c.description}</p>
                                     <p><strong>Sponsor:</strong> {c.Sponsor.companyName}</p>
                                     {c.isAcceptedByUser ? (
-                            <p className="mt-2 text-green-600 font-semibold">
-                                You have already accepted this campaign.
-                            </p>
-                        ) : (
-                            <button 
-                                onClick={() => handleAcceptCampaign(c.id)} 
-                                className="mt-2 bg-green-600 text-white px-3 py-1 rounded"
-                            >
-                                Accept Campaign
-                            </button>
-                        )}
+                                        <p className="mt-2 text-green-600 font-semibold">
+                                            You have already accepted this campaign.
+                                        </p>
+                                    ) : (
+                                        <button
+                                            onClick={() => handleAcceptCampaign(c.id)}
+                                            className="mt-2 bg-green-600 text-white px-3 py-1 rounded"
+                                        >
+                                            Accept Campaign
+                                        </button>
+                                    )}
                                 </div>
                             );
                         })

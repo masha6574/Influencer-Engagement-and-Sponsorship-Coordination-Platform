@@ -112,41 +112,64 @@ const getAdRequests = async (req, res) => {
     }
 };
 
-
 // POST /api/influencer/ad-requests/:id/:action
-exports.handleAdRequest = async (req, res) => {
+const handleAdRequest = async (req, res) => {
     const { id, action } = req.params;
-    const validActions = ['accept', 'reject', 'negotiate'];
+    const validActions = ['accept', 'reject'];
 
+    // Validate action type
     if (!validActions.includes(action)) {
         return res.status(400).json({ message: 'Invalid action' });
     }
 
     try {
-        const request = await AdRequest.findOne({
-            where: { id, influencerId: req.user.id } // Ensure the influencerId matches the JWT userId
-        });
+        // Step 1: Get influencer using userId from the JWT
+        const influencer = await Influencer.findOne({ where: { userId: req.user.userId } });
 
-        if (!request) return res.status(404).json({ message: 'Ad request not found' });
-
-        // Check for valid transition: cannot accept already accepted or reject already rejected, etc.
-        if (action === 'accept' && request.status !== 'pending') {
-            return res.status(400).json({ message: 'Cannot accept this request, it is already processed' });
+        if (!influencer) {
+            return res.status(404).json({ message: 'Influencer not found' });
         }
 
-        if (action === 'reject' && request.status !== 'pending') {
-            return res.status(400).json({ message: 'Cannot reject this request, it is already processed' });
+        // Step 2: Find the ad request by ID (no influencer filter here)
+        const request = await AdRequest.findOne({ where: { id } });
+
+        if (!request) {
+            return res.status(404).json({ message: 'Ad request not found' });
         }
 
-        request.status = action;
-        await request.save();
+        // Step 3: Prevent status change if already processed
+        if (request.status !== 'pending') {
+            return res.status(400).json({ message: `Cannot ${action} this request, it is already ${request.status}` });
+        }
 
-        res.json({ message: `Ad request ${action}ed` });
+        // Step 4: If influencer already assigned and it's not the current one, block it
+        if (request.influencerId && request.influencerId !== influencer.id) {
+            return res.status(403).json({ message: 'You are not authorized to modify this request.' });
+        }
+
+        // Step 5: On 'accept', assign influencerId if not already set
+if (action === 'accept' && !request.influencerId) {
+    request.influencerId = influencer.id;
+}
+
+// Step 6: Map action to proper status string
+const statusMap = {
+    accept: 'accepted',
+    reject: 'rejected',
+    negotiate: 'negotiated'
+};
+
+request.status = statusMap[action];
+await request.save();
+
+        res.json({ message: `Ad request ${action}ed successfully` });
+
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server error', error: err.message });
     }
 };
+
 
 // GET /api/campaigns
 const getPublicCampaigns = async (req, res) => {
@@ -250,4 +273,4 @@ const acceptCampaign = async (req, res) => {
 
 
 
-module.exports = { getProfile, updateProfile, getPublicCampaigns, acceptCampaign, getAdRequests };
+module.exports = { getProfile, updateProfile, getPublicCampaigns, acceptCampaign, getAdRequests, handleAdRequest };

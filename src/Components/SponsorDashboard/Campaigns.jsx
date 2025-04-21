@@ -285,6 +285,11 @@ const Campaigns = () => {
                                     {campaignAds[campaign.id].map((adRequest) => (
                                         <div key={adRequest.id} className="border p-2 rounded mt-2">
                                             <p>{adRequest.message}</p>
+                                            <p>Status: {adRequest.status}</p>
+                                            {/* Conditionally display Accepted By when the status is 'Accepted' */}
+                                            {adRequest.status === 'accepted' && adRequest.influencerId && (
+                                                <p><strong>Accepted by (Influencer ID):</strong> {adRequest.influencerId}</p>
+                                            )}
                                             <p><strong>Proposed Terms:</strong> {adRequest.proposedTerms}</p>
 
                                             {/* Edit and delete ad request buttons */}
