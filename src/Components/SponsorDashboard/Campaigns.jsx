@@ -253,6 +253,17 @@ const Campaigns = () => {
                                 >
                                     Delete
                                 </button>
+
+                                {campaign.acceptedInfluencers && campaign.acceptedInfluencers.length > 0 && (
+                                        <div className="mt-4">
+                                            <h4 className="font-semibold">Accepted Influencers:</h4>
+                                            <ul className="list-disc list-inside">
+                                                {campaign.acceptedInfluencers.map((influencer) => (
+                                                    <li key={influencer.influencerId}>{influencer.influencerName}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
                             </div>
                         </div>
                     ))
@@ -272,10 +283,10 @@ const Campaigns = () => {
                                 >
                                     <p><strong>Message: </strong>{adRequest.message}</p>
                                     <p><strong>Proposed Terms: </strong>{adRequest.proposedTerms}</p>
-                                    <div className="mt-2 flex absolute">
+                                    <div className="mt-2 flex justify-between">
                                         <button
                                             onClick={() => handleEditAdRequest(adRequest)}
-                                            className="bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                                            className="bg-indigo-600 p-2 text-white rounded-md hover:bg-indigo-700"
                                         >
                                             Edit
                                         </button>

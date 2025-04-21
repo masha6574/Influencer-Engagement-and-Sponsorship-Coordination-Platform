@@ -24,7 +24,7 @@ const DevicesDisplay = () => {
                 <Navbar />
 
                 {/* Top Heading */}
-                <div className="text-center text-2xl sm:text-4xl font-semibold leading-snug mt-25 mb-4 text-rose-700 tracking-wide font-poppins">
+                <div className="new-font text-center text-5xl font-semibold leading-snug mt-25 mb-4 text-rose-700 tracking-wide font-poppins">
                     Connecting Brands with Influencers,<br />
                     Empowering Seamless Campaigns.
                 </div>

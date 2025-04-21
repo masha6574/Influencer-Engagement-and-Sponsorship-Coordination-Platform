@@ -41,7 +41,7 @@ const LoginForm = () => {
       setIsError(false);
       localStorage.setItem("token", "admin-token"); // Consider more secure token handling
       localStorage.setItem("userRole", "admin"); // Store role if needed elsewhere
-      setTimeout(() => navigate("/admin-dashboard"), 1500); // Redirect after message
+      setTimeout(() => navigate("/admin-dashboard"),1000); // Redirect after message
       return;
     }
 

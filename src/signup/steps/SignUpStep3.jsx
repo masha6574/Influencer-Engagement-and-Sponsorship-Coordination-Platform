@@ -65,7 +65,7 @@ const SignUpStep3 = () => {
             const res = await axios.post("http://localhost:2020/api/auth/register", dataToSend);
             setStatus("✅ Registration successful!");
 
-            setTimeout(() => navigate("/signup-success"), 1500);
+            setTimeout(() => navigate("/signup-success"),0);
         } catch (err) {
             console.error("Registration Error:", err.response || err);
             const errorMsg = err.response?.data?.message || err.response?.data?.error || err.message || "Registration failed. Please check details and try again.";
@@ -84,7 +84,7 @@ const SignUpStep3 = () => {
         return (
             <div className="flex justify-between py-2 border-b border-gray-200 last:border-b-0">
                 <dt className="text-sm font-medium text-gray-600 break-words pr-2">{label}:</dt>
-                <dd className="text-sm text-gray-800 text-right">{isCurrency ? `$${value}` : value}</dd>
+                <dd className="text-sm text-gray-800 text-right">{isCurrency ? `₹${value}` : value}</dd>
             </div>
         );
     };

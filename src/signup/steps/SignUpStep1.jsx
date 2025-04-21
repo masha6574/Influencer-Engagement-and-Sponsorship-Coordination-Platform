@@ -146,7 +146,7 @@ const SignUpStep1 = () => {
                 </div>
 
                 {/* Optional: Link to Login */}
-                <p className="text-center text-sm text-gray-600 mt-6">
+                <p className="text-center text-sm text-gray-600 mt-2">
                     Already have an account?{' '}
                     <a href="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
                         Sign in
