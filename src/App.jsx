@@ -12,6 +12,11 @@ import LoginForm from "./Components/LoginForm";
 import CloudLayout from "./Components/CloudLayout";
 import AdminDashboard from "./Components/AdminDashboard";
 import SignUpSuccess from "./signup/steps/SignUpSuccess";
+import DashboardLayout from "./Components/SponsorDashboard/DashboardLayout";
+import SponsorHome from "./Components/SponsorDashboard/SponsorHome";
+import Campaigns from "./Components/SponsorDashboard/Campaigns";
+import Messages from "./Components/SponsorDashboard/Messages";
+import Settings from "./Components/SponsorDashboard/Settings";
 
 const router = createBrowserRouter([
   {
@@ -69,6 +74,20 @@ const router = createBrowserRouter([
   {
     path: "/signup-success",
     element: <SignUpSuccess />
+  },
+  {
+    path: "/sponsor-dashboard",
+    element: (
+      <CloudLayout>
+        <DashboardLayout />
+      </CloudLayout>
+    ),
+    children: [
+      { path: "home", element: <SponsorHome /> },
+      { path: "campaign", element: <Campaigns /> },
+      { path: "messages", element: <Messages /> },
+      { path: "settings", element: <Settings /> },
+    ],
   }
 ]);
 

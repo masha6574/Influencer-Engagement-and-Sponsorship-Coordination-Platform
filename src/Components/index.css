@@ -1,7 +1,9 @@
 @import "tailwindcss";
 
-body {
-    overflow-x: hidden;
+html,body,#root {
+    /* overflow-x: hidden; */
+    height:100%;
+    overflow:hidden;
     font-family: "Inter", sans-serif;
 }
 

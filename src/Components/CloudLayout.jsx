@@ -4,7 +4,7 @@ import "../Components/clouds.css"; // make sure this path is correct
 
 const CloudLayout = ({ children }) => {
     return (
-        <div className="relative w-screen h-screen overflow-hidden">
+        <div className="relative w-screen h-screen">
             {/* Background Clouds */}
             <div class="clouds-container">
                 <div class="cloud cloud-1"></div>
