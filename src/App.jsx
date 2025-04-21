@@ -82,7 +82,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/signup-success",
-    element: <SignUpSuccess />
+    element: (<CloudLayout><SignUpSuccess /></CloudLayout>),
   },
   {
     path: "/sponsor-dashboard",

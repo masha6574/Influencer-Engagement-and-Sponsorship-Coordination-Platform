@@ -4,7 +4,7 @@ import "../Components/clouds.css";
 const CloudLayout = ({ children }) => {
     return (
         <div className="relative w-screen min-h-screen overflow-x-hidden">
-            {/* Fixed Background Clouds */}
+            {/* Background Clouds */}
             <div className="fixed top-0 left-0 w-full h-full z-0 overflow-hidden pointer-events-none">
                 <div className="clouds-container">
                     <div className="cloud cloud-1"></div>
