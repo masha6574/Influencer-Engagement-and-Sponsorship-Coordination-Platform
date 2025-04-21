@@ -35,16 +35,18 @@ Influencer.belongsTo(User, {
     foreignKey: 'userId'
 });
 
-// 3. Sponsor - Campaign (One-to-Many)
+// 3. Sponsor - Campaign (One-to-Many) using Sponsor.userId as PK
 Sponsor.hasMany(Campaign, {
     foreignKey: {
-        name: 'sponsorId',
+        name: 'userId',
         allowNull: false
     },
+    sourceKey: 'userId', // 👈 this is the key difference
     onDelete: 'CASCADE'
 });
 Campaign.belongsTo(Sponsor, {
-    foreignKey: 'sponsorId'
+    foreignKey: 'userId',
+    targetKey: 'userId'  // 👈 this tells Sequelize to use Sponsor.userId
 });
 
 // 4. Campaign - AdRequest (One-to-Many)

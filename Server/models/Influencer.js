@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+// models/Influencer.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 const User = require('./User');
@@ -13,7 +15,13 @@ const Influencer = sequelize.define('Influencer', {
   },
   reach: {
     type: DataTypes.INTEGER // Or FLOAT depending on your logic
+  },
+  // --- New Field Added ---
+  profileImageUrl: {
+    type: DataTypes.STRING, // Stores the path or URL to the image
+    allowNull: true // Or false if you want to make it mandatory
   }
+  // -----------------------
 });
 
 // Associations
@@ -24,4 +32,5 @@ User.hasOne(Influencer, { foreignKey: 'userId' });
 Influencer.belongsToMany(Campaign, { through: 'AcceptedCampaigns', foreignKey: 'influencerId' });
 Campaign.belongsToMany(Influencer, { through: 'AcceptedCampaigns', foreignKey: 'campaignId' });
 
+module.exports = Influencer;
 module.exports = Influencer;

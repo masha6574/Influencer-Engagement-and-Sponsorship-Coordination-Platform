@@ -2,7 +2,8 @@ const { User, Sponsor, Influencer } = require('../models'); // adjust path as ne
 const sequelize = require('../config/database'); // ensure this is the Sequelize instance, NOT class
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-
+require('dotenv').config();
+console.log("Loaded JWT_SECRET:", process.env.JWT_SECRET);
 const register = async (req, res) => {
   const { name, email, password, role, company, budget, industry, category, niche, reach } = req.body;
 
@@ -76,7 +77,7 @@ const login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ userId: user.id, role: user.role }, "your_jwt_secret", {
+    const token = jwt.sign({ userId: user.id, role: user.role }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
 
@@ -102,7 +103,7 @@ const authenticateJWT = (req, res, next) => {
   const token = authHeader.split(" ")[1]; // Extract the token from the 'Bearer' prefix
 
   try {
-    const decoded = jwt.verify(token, "your_jwt_secret");
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
     next();
   } catch (error) {

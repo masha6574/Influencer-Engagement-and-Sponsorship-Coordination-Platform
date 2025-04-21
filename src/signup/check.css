@@ -1,44 +1,57 @@
+/* check.css */
 @import "tailwindcss";
 
+
+/* Base input style - similar to the image (less prominent border, subtle bg) */
 .input {
-    @apply w-full p-3 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500;
+    @apply w-full p-3 border border-gray-300 rounded-md bg-gray-50
+    /* Slightly off-white bg */
+    focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out text-sm;
+    /* Smaller text */
 }
 
-.btn {
-    @apply w-full py-3 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 transition;
+/* Specific style for the select when no option is chosen */
+.input select:invalid,
+.input option[value=""] {
+    @apply text-gray-500;
 }
 
-/* Style for the input field when there is an error */
+/* Primary submit button style */
+.btn-submit {
+    @apply w-full py-3 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out cursor-pointer;
+}
+
+/* Error state for input fields */
 .input-error {
-    border: 2px solid red;
+    @apply border-red-500 ring-1 ring-red-500 focus:border-red-500 focus:ring-red-500;
+    /* Removed shake animation, but you can add it back if desired */
     animation: shake 0.3s ease-in-out;
 }
 
+/* Style for error messages */
 .error-message {
-    color: red;
-    font-size: 12px;
-    margin-top: 4px;
+    @apply text-red-600 text-xs mt-1;
+    /* Smaller font size */
 }
 
-/* Keyframes for shake animation */
+/* Optional: Add back the shake animation if you like it */
+
 @keyframes shake {
-    0% {
+
+    0%,
+    100% {
         transform: translateX(0);
     }
 
     25% {
-        transform: translateX(-4px);
+        transform: translateX(-3px);
     }
 
     50% {
-        transform: translateX(4px);
+        transform: translateX(3px);
     }
 
     75% {
-        transform: translateX(-4px);
-    }
-
-    100% {
-        transform: translateX(0);
+        transform: translateX(-3px);
     }
 }
