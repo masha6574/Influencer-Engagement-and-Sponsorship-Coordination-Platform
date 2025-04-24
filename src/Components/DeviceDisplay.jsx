@@ -16,8 +16,6 @@ const DevicesDisplay = () => {
 
     return (
         <div className="relative w-full min-h-screen overflow-x-hidden">
-            {/* Cloud Background */}
-            {/* <HomePage /> */}
 
             <div className="relative z-10 w-full">
                 {/* Navbar */}
@@ -37,20 +35,20 @@ const DevicesDisplay = () => {
                             }`}
                     >
                         <img
-                            src="/assets/laptop_test_img.png"
+                            src="/assets/laptop.png"
                             alt="Laptop Screen"
                             className="w-full h-full object-cover rounded-lg"
                         />
 
                         {/* Phone Overlay (left) */}
                         <div
-                            className={`absolute -bottom-20 -left-28 w-[160px] h-[280px] bg-black rounded-[40px] shadow-2xl border-4 border-gray-700 flex items-center justify-center transition-all duration-1000 ease-in-out ${isHovered ? "opacity-100" : "opacity-0"
+                            className={`absolute -bottom-20 -left-28 w-[160px] h-[280px] bg-black rounded-[40px] border-4 border-gray-300 shadow-2xl flex items-center justify-center transition-all duration-1000 ease-in-out ${isHovered ? "opacity-100" : "opacity-0"
                                 }`}
                         >
                             <img
-                                src="/assets/Phone_test_img.jpg"
+                                src="/assets/image.png"
                                 alt="Phone Screen"
-                                className="w-full h-full object-cover rounded-[40px]"
+                                className="w-full h-full object-fill rounded-[40px]"
                             />
                         </div>
 
@@ -60,9 +58,9 @@ const DevicesDisplay = () => {
                                 }`}
                         >
                             <img
-                                src="/assets/Tab_test_img.jpg"
+                                src="/assets/tab.png"
                                 alt="Tab Screen"
-                                className="w-full h-full object-cover rounded-[30px]"
+                                className="w-full h-full object-fill rounded-[30px]"
                             />
                         </div>
                     </div>

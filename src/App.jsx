@@ -16,7 +16,6 @@ import SignUpSuccess from "./signup/steps/SignUpSuccess";
 import DashboardLayout from "./Components/SponsorDashboard/DashboardLayout";
 import SponsorHome from "./Components/SponsorDashboard/SponsorHome";
 import Campaigns from "./Components/SponsorDashboard/Campaigns";
-import Messages from "./Components/SponsorDashboard/Messages";
 import Settings from "./Components/SponsorDashboard/Settings";
 
 const router = createBrowserRouter([

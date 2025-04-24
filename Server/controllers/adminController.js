@@ -1,7 +1,6 @@
 const { Campaign, Sponsor, User, AdRequest, Influencer } = require('../models');
 const { Op } = require('sequelize');
 
-// Get campaigns with ongoing ad requests (status: pending or accepted)
 exports.getOngoingCampaigns = async (req, res) => {
   try {
     const campaigns = await Campaign.findAll({
@@ -18,7 +17,7 @@ exports.getOngoingCampaigns = async (req, res) => {
 
     const data = campaigns.map(c => ({
       name: c.title,
-      progress: `${Math.floor(Math.random() * 100)}%` // simulate progress
+      progress: `${Math.floor(Math.random() * 100)}%` 
     }));
 
     res.json(data);
@@ -28,11 +27,10 @@ exports.getOngoingCampaigns = async (req, res) => {
   }
 };
 
-// Get flagged campaigns
 exports.getFlaggedCampaigns = async (req, res) => {
   try {
     const campaigns = await Campaign.findAll({
-      where: { isFlagged: true }, // ensure isFlagged column exists
+      where: { isFlagged: true },
       include: [
         {
           model: Sponsor,
@@ -53,7 +51,6 @@ exports.getFlaggedCampaigns = async (req, res) => {
   }
 };
 
-// Flag a user or campaign
 exports.flagUserOrCampaign = async (req, res) => {
   const { type, id } = req.body;
 
@@ -73,7 +70,6 @@ exports.flagUserOrCampaign = async (req, res) => {
   }
 };
 
-// Remove a user or campaign
 exports.removeUserOrCampaign = async (req, res) => {
   const { type, id } = req.body;
 
@@ -93,7 +89,6 @@ exports.removeUserOrCampaign = async (req, res) => {
   }
 };
 
-// Search campaigns, sponsors, or influencers by name
 exports.searchEntities = async (req, res) => {
   const { query } = req.query;
 
@@ -119,7 +114,6 @@ exports.searchEntities = async (req, res) => {
   }
 };
 
-// Get general stats for dashboard
 exports.getStats = async (req, res) => {
   try {
     const userCount = await User.count();

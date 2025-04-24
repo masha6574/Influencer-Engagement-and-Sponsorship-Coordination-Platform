@@ -1,28 +1,24 @@
-const { Op } = require('sequelize'); // Sequelize operators
+const { Op } = require('sequelize');
 const Influencer = require('../models/Influencer');
 const User = require('../models/User');
 const AdRequest = require('../models/AdRequest');
 const Campaign = require('../models/Campaign');
 const { Sponsor } = require('../models');
 
-// GET /api/influencer/profile
-const getProfile = async (req, res) => {  // Mark the function as async
+const getProfile = async (req, res) => {  
     try {
-        // Find the influencer using userId from the decoded token (from req.user)
         const influencer = await Influencer.findOne({ where: { userId: req.user.userId } });
 
         if (!influencer) {
             return res.status(404).json({ message: 'Influencer not found' });
         }
 
-        // Now find the user associated with this influencer using userId from the decoded token
-        const user = await User.findByPk(req.user.userId);  // Ensure req.user.userId exists and is correct
+        const user = await User.findByPk(req.user.userId); 
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        // Send back both influencer and user data as JSON
         res.json({ influencer, user });
     } catch (err) {
         console.error("Error fetching profile:", err);
@@ -30,7 +26,6 @@ const getProfile = async (req, res) => {  // Mark the function as async
     }
 };
 
-// PUT /api/influencer/profile
 const updateProfile = async (req, res) => {
     const { name, category, niche, reach } = req.body;
 

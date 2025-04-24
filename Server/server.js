@@ -1,6 +1,6 @@
 // Server/server.js
 const express = require('express');
-const bodyParser = require('body-parser'); // Prefer express.json() / express.urlencoded()
+const bodyParser = require('body-parser'); 
 require('dotenv').config();
 const cors = require('cors');
 const { sequelize } = require('./models');
@@ -14,17 +14,12 @@ const campaignRoutes = require('./routes/campaignRoutes');
 
 const app = express();
 
-// --- Middleware Setup ---
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// --- Serve Static Files ---
-// Serve files from the 'uploads' directory located at the project root
-app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads'))); // <--- CORRECTED PATH
-//                                            ^^ Go up one level from Server/
+app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads'))); 
 
-// --- API Routes ---
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/influencer', influencerRoutes);
@@ -34,7 +29,6 @@ app.use('/api/campaign', campaignRoutes);
 const PORT = process.env.PORT || 2020;
 
 console.log("Starting server...");
-// --- Database Connection and Server Start ---
 sequelize.authenticate()
   .then(() => {
     console.log("✅ Database connected successfully");

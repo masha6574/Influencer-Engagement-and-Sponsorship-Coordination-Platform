@@ -1,5 +1,5 @@
-const { User, Sponsor, Influencer } = require('../models'); // adjust path as needed
-const sequelize = require('../config/database'); // ensure this is the Sequelize instance, NOT class
+const { User, Sponsor, Influencer } = require('../models');
+const sequelize = require('../config/database');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
@@ -11,7 +11,6 @@ const register = async (req, res) => {
   const t = await sequelize.transaction();
 
   try {
-    // Check if user already exists
     const existingUser = await User.findOne({ where: { email }, transaction: t });
     if (existingUser) {
       await t.rollback();
@@ -20,7 +19,6 @@ const register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create user
     const newUser = await User.create({
       name,
       email,
@@ -28,7 +26,6 @@ const register = async (req, res) => {
       role,
     }, { transaction: t });
 
-    // Role-based creation (Sponsor or Influencer)
     if (role === 'sponsor') {
       await Sponsor.create({
         userId: newUser.id,
@@ -84,7 +81,7 @@ const login = async (req, res) => {
     return res.status(200).json({
       message: "Login successful",
       token,
-      user, // You can also return this to show the profile
+      user,
     });
   } catch (error) {
     console.error("Login error:", error);
@@ -99,14 +96,14 @@ const authenticateJWT = (req, res, next) => {
     return res.status(401).json({ message: "No token provided" });
   }
 
-  const token = authHeader.split(" ")[1]; // Extract the token from the 'Bearer' prefix
+  const token = authHeader.split(" ")[1];
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
     next();
   } catch (error) {
-    console.log('Invalid token:', error); // Log the error if the token is invalid
+    console.log('Invalid token:', error);
     return res.status(403).json({ message: "Invalid token" });
   }
 };
