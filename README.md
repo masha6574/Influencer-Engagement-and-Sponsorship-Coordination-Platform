@@ -60,20 +60,46 @@ Built with **React, Node.js, Express, and MySQL**, the platform emphasizes a cle
 
 ## 📂 Project Structure
 project-root/
-│── client/ # React frontend
-│ ├── src/
-│ │ ├── components/ # Reusable UI components
-│ │ ├── pages/ # Page-level components
-│ │ ├── routes/ # Routing setup
-│ │ └── assets/ # Static assets (images, Lottie JSON, etc.)
-│ └── package.json
-│── server/ # Node.js backend
-│ ├── controllers/ # Request handlers
-│ ├── models/ # MySQL models (Sequelize or raw queries)
-│ ├── routes/ # API routes
-│ ├── config/ # Database config and environment setup
-│ └── package.json
-│── README.md
+├── client/                      # React frontend
+│   ├── public/
+│   └── src/
+│       ├── assets/              # images, Lottie JSON, etc.
+│       ├── components/          # Reusable UI components
+│       │   ├── CloudLayout.jsx
+│       │   ├── LoginForm.jsx
+│       │   ├── About.jsx
+│       │   ├── DeviceDisplay.jsx
+│       │   ├── AdminDashboard.jsx
+│       │   ├── InfluencerDashboard.jsx
+│       │   └── SponsorDashboard/
+│       │       ├── DashboardLayout.jsx
+│       │       ├── SponsorHome.jsx
+│       │       ├── Campaigns.jsx
+│       │       └── Settings.jsx
+│       ├── pages/
+│       ├── routes/
+│       ├── signup/               # signup flow (layout, context, steps)
+│       │   ├── SignUpLayout.jsx
+│       │   ├── SignUpContext.jsx
+│       │   └── steps/
+│       │       ├── SignUpStep1.jsx
+│       │       ├── SignUpStep2.jsx
+│       │       ├── SignUpStep3.jsx
+│       │       └── SignUpSuccess.jsx
+│       ├── index.css
+│       └── App.jsx
+│   └── package.json
+│
+├── server/                      # Node.js backend
+│   ├── controllers/
+│   ├── models/
+│   ├── routes/
+│   ├── config/
+│   ├── middlewares/
+│   └── package.json
+│
+├── .gitignore
+└── README.md
 
 
 ---
