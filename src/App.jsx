@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
-import About from "./components/About";
-import DeviceDisplay from "./components/DeviceDisplay";
+import About from "./Components/About";
+import DeviceDisplay from "./Components/DeviceDisplay";
 import SignUp from "./Components/SignUp";
 import SignUpStep1 from "./signup/steps/SignUpStep1";
 import SignUpStep2 from "./signup/steps/SignUpStep2";
