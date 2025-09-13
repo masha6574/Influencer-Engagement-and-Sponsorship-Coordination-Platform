@@ -67,15 +67,16 @@ project-root/
 │ │ ├── routes/ # Routing setup
 │ │ └── assets/ # Static assets (images, Lottie JSON, etc.)
 │ └── package.json
-
 │── server/ # Node.js backend
 │ ├── controllers/ # Request handlers
 │ ├── models/ # MySQL models (Sequelize or raw queries)
 │ ├── routes/ # API routes
 │ ├── config/ # Database config and environment setup
 │ └── package.json
-
 │── README.md
+
+
+---
 
 
 ## ⚡ Installation & Setup
