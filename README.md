@@ -1,6 +1,6 @@
 # Influencer–Sponsor Platform
 
-🔗 **Live Demo (Vercel App):** [https://your-vercel-app-url.vercel.app](https://influencer-sponsor.vercel.app/)
+🔗 **Live Demo (Vercel App):** [https://influencer-sponsor.vercel.app/](https://influencer-sponsor.vercel.app/)
 
 ---
 
