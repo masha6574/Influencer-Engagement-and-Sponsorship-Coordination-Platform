@@ -53,54 +53,7 @@ Built with **React, Node.js, Express, and MySQL**, the platform emphasizes a cle
 - MySQL (with Sequelize / raw queries)
 
 **Deployment:**
-- Vercel (Frontend)
-- [Optional: Mention backend deployment if applicable]
-
----
-
-## 📂 Project Structure
-project-root/
-├── client/                      # React frontend
-│   ├── public/
-│   └── src/
-│       ├── assets/              # images, Lottie JSON, etc.
-│       ├── components/          # Reusable UI components
-│       │   ├── CloudLayout.jsx
-│       │   ├── LoginForm.jsx
-│       │   ├── About.jsx
-│       │   ├── DeviceDisplay.jsx
-│       │   ├── AdminDashboard.jsx
-│       │   ├── InfluencerDashboard.jsx
-│       │   └── SponsorDashboard/
-│       │       ├── DashboardLayout.jsx
-│       │       ├── SponsorHome.jsx
-│       │       ├── Campaigns.jsx
-│       │       └── Settings.jsx
-│       ├── pages/
-│       ├── routes/
-│       ├── signup/               # signup flow (layout, context, steps)
-│       │   ├── SignUpLayout.jsx
-│       │   ├── SignUpContext.jsx
-│       │   └── steps/
-│       │       ├── SignUpStep1.jsx
-│       │       ├── SignUpStep2.jsx
-│       │       ├── SignUpStep3.jsx
-│       │       └── SignUpSuccess.jsx
-│       ├── index.css
-│       └── App.jsx
-│   └── package.json
-│
-├── server/                      # Node.js backend
-│   ├── controllers/
-│   ├── models/
-│   ├── routes/
-│   ├── config/
-│   ├── middlewares/
-│   └── package.json
-│
-├── .gitignore
-└── README.md
-
+- Vercel
 
 ---
 
